@@ -1,0 +1,7 @@
+name: advisor-eval
+version: 0.1.0
+api_version: 1
+description: Parent-run harness for the frozen Hermes Advisor G4 ten-case usefulness evaluation (bounded, no replay).
+capabilities:
+  - llm.provider_override
+  - llm.model_override

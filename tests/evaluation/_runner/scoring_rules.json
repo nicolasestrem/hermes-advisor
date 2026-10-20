@@ -1,0 +1,33 @@
+{
+  "schema": "advisor-eval-scoring-rules/1",
+  "frozen_before_any_run": true,
+  "principle": "Success is defined here, from the frozen cases only. It is never re-defined after results are seen. Mechanical classes use only the strictly validated response outcome; semantic judgements need explicit adjudication labels supplied by a human/parent, never inferred by this tool. Failed, invalid, timed-out, unsettled or never-run cases are retained and are never counted as a success.",
+  "outcomes": ["findings", "no_findings", "insufficient_evidence"],
+  "finding_labels": {
+    "supported_true_positive": "Finding identifies the case's gold defect, with cited evidence that actually supports it.",
+    "supported_unverifiable_recommendation": "Finding flags that a claim is unsupported / asks for missing evidence, without asserting the unavailable thing failed or is unsafe.",
+    "unsupported_accusation": "Finding asserts a defect/failure/unsafety the packet does not support.",
+    "false_positive": "Finding alleges a defect that does not exist in the packet.",
+    "other_valid_issue": "A genuine, evidence-supported issue not in the gold annotation. Justify in notes. Never counted as detection of the gold defect nor as a correct control/abstention."
+  },
+  "allowed_labels_by_kind": {
+    "defect": ["supported_true_positive", "supported_unverifiable_recommendation", "unsupported_accusation", "false_positive", "other_valid_issue"],
+    "control": ["unsupported_accusation", "false_positive", "other_valid_issue"],
+    "incomplete_evidence": ["supported_unverifiable_recommendation", "unsupported_accusation", "false_positive", "other_valid_issue"]
+  },
+  "ratings": ["Useful", "Not useful"],
+  "mechanical": {
+    "defect": {"findings": "detection_candidate", "no_findings": "missed", "insufficient_evidence": "missed"},
+    "control": {"no_findings": "correct_control", "findings": "false_positive_candidate", "insufficient_evidence": "over_abstention"},
+    "incomplete_evidence": {"insufficient_evidence": "correct_abstention", "findings": "abstention_candidate", "no_findings": "certified_unverified_claim"}
+  },
+  "non_completed_statuses_class": "failed_retained",
+  "adjudicated": {
+    "detection_candidate": {"any_supported_true_positive": "detected_supported", "otherwise": "missed_by_adjudication"},
+    "false_positive_candidate": {"only_other_valid_issue_labels": "control_flagged_other_valid_issue", "otherwise": "false_positive"},
+    "abstention_candidate": {"any_unsupported_accusation_or_false_positive": "unsupported_accusation", "any_supported_unverifiable_recommendation": "correct_abstention", "otherwise": "abstention_not_established"}
+  },
+  "success_classes": {"defect": ["detected_supported"], "control": ["correct_control"], "incomplete_evidence": ["correct_abstention"]},
+  "pending_classes": ["detection_candidate", "false_positive_candidate", "abstention_candidate", "pending_adjudication"],
+  "reporting": "Counts per kind against the fixed denominators 5/3/2 and 10 overall. No numeric usefulness threshold exists; the user decides. Report latency, served route, known/unknown usage and cost, per-finding labels and Useful/Not useful ratings. Product (deterministic) tests are reported separately."
+}

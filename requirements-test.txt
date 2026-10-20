@@ -1,0 +1,7 @@
+# Offline Python test dependencies for the Hermes Advisor public preview.
+# Verified with CPython 3.14.7 on Linux; no network or provider credentials are
+# used by the suites. Install with:
+#   python -m pip install -r requirements-test.txt
+pytest==9.1.1
+fastapi==0.152.0
+httpx==0.28.1

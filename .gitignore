@@ -1,0 +1,45 @@
+# Python caches, environments and packaging output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+.tox/
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Local databases and logs produced by offline runs
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.log
+
+# Local credentials and private material
+.env
+.env.*
+credentials.json
+auth.json
+cookies
+*.pem
+*.key
+
+# Test receipts and disposable scratch trees
+.test-receipts/
+.test-scratch/
+
+# Node.js / packaging artifacts
+node_modules/
+tests/desktop/node_modules/
+*.zip
+
+# OS/editor noise
+.DS_Store

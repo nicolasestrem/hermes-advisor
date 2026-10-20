@@ -1,0 +1,23 @@
+name: hermes-advisor
+version: 0.1.0a1
+manifest_version: 2
+api_version: 1
+description: Evidence-linked asynchronous reviews with user-controlled feedback.
+author: Hermes Advisor contributors
+license: MIT
+homepage: https://github.com/nicolasestrem/hermes-advisor
+tags:
+  - review
+  - feedback
+  - cli
+  - desktop
+requires_hermes: ">=0.22.2"
+provides_hooks:
+  - pre_llm_call
+  - post_llm_call
+  - on_session_end
+  - subagent_start
+  - subagent_stop
+capabilities:
+  - llm.provider_override
+  - llm.model_override

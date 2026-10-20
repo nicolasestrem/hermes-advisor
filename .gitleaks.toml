@@ -1,0 +1,9 @@
+title = "Hermes Advisor public preview export"
+
+[extend]
+useDefault = true
+
+# No path, regex, commit, or stopword allowlists. The export must scan clean.
+# Test fixtures that resemble credentials are built from synthetic fragments;
+# if a future fixture needs an exception, scope it to the exact path and value
+# and document why in the same change.

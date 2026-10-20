@@ -1,0 +1,16 @@
+{
+  "name": "@hermes/plugin-sdk",
+  "kind": "test-contract-double",
+  "description": "Portable test-only implementation of the public Desktop plugin SDK surface used by the Advisor pane. It is not the production SDK and is not native Desktop proof.",
+  "exports": [
+    "host",
+    "useValue",
+    "Button",
+    "Checkbox",
+    "EmptyState",
+    "ErrorState",
+    "GlyphSpinner",
+    "Input",
+    "Textarea"
+  ]
+}
