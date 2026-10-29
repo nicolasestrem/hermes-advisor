@@ -86,13 +86,40 @@ const C1_CONTROL = /[\u0080-\u009f]/g
 // markup, scriptable URLs, or data: payloads into the DOM.
 const HTML_DANGEROUS = /<\s*\/?\s*[a-z][^>]*>|&\s*#\d+;?|&\s*[a-z]+\s*;|&#x[0-9a-f]+;?|data\s*:\s*[^\\s"'`<>()]+|javascript\s*:|vbscript\s*:|livescript\s*:|mocha\s*:/gi
 
+/**
+ * Apply the strip chain until the text stops changing.
+ *
+ * Several of these patterns match a multi-character sequence, so one pass can
+ * splice a fresh dangerous sequence out of what is left: `<<script>script>`
+ * loses its inner match and hands back `<script>`, and `&&lt;lt;` hands back
+ * `&lt;`. Re-running the whole chain closes that hole. Every replacement only
+ * deletes characters, so each changing pass strictly shortens the text and the
+ * loop always terminates.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function stripUnsafeText(text) {
+  let input = text
+  let previous
+  do {
+    previous = input
+    input = input
+      .replace(TERMINAL_CONTROL, '')
+      .replace(C0_CONTROL, '')
+      .replace(C1_CONTROL, '')
+      .replace(HTML_DANGEROUS, '')
+  } while (input !== previous)
+  return input
+}
+
 export function sanitizeReasonText(raw) {
   if (typeof raw !== 'string') {
     return ''
   }
   const kept = []
   for (const line of raw.split(/\r?\n/)) {
-    const trimmed = line.trim().replace(TERMINAL_CONTROL, '').replace(C0_CONTROL, '').replace(C1_CONTROL, '').replace(HTML_DANGEROUS, '')
+    const trimmed = stripUnsafeText(line.trim())
     if (!trimmed) {
       continue
     }

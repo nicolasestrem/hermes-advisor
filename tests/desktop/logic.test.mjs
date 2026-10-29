@@ -139,6 +139,28 @@ describe('sanitizeReasonText (view sanitization; no secrets in DOM/logs)', () =>
     expect(out).not.toMatch(/</)
     expect(out).toContain('safe tail')
   })
+
+  // js/incomplete-multi-character-sanitization regression: one pass over a
+  // multi-character pattern can splice a fresh dangerous sequence out of the
+  // text that is left behind (`<<script>script>` -> `<script>`), so the strip
+  // chain must run to a fixed point instead of exactly once.
+  it('A21: nested payloads that reassemble after one strip pass are removed', () => {
+    const NESTED = [
+      '<<script>script>alert(1)',
+      '<scrip<script>t>alert(1)</script>',
+      '&&lt;lt;script&gt;',
+      '<<img src=x onerror=alert(1)>>',
+      'jjavascript:javascript:alert(1)',
+    ]
+    for (const raw of NESTED) {
+      const out = sanitizeReasonText(raw)
+      const low = out.toLowerCase()
+      expect(low).not.toContain('<script')
+      expect(low).not.toContain('javascript:')
+      expect(low).not.toContain('onerror')
+      expect(out).not.toMatch(/<[a-z]/i)
+    }
+  })
 })
 
 const SNAP = {
