@@ -3,6 +3,17 @@
 All dates are UTC unless noted. This project is an untagged public source preview;
 the version below is a pre-release identifier, not a stable release.
 
+## Unreleased
+
+### Fixed
+
+- Desktop pane sanitizer (`desktop/logic.mjs`, with `desktop/plugin.js`
+  regenerated) now strips terminal-control and HTML/JS/data-URI sequences to a
+  fixed point instead of a single pass, closing the nested-payload bypass where
+  removing one multi-character sequence hands back a live one
+  (`<<script>script>` → `<script>`). Addresses code-scanning rule
+  `js/incomplete-multi-character-sanitization` (alerts #1 and #2).
+
 ## 0.1.0a1 — public source preview (2026-10-20)
 
 **Status:** untagged source preview. Not v0.1 stable, not a tagged release, not a
